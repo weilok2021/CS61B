@@ -159,9 +159,10 @@ public class Model extends Observable {
         int len = b.size();
         for (int row = 0; row < len; row++) {
             for (int col = 0; col < len; col++) {
+                Tile tile = b.tile(col, row);
                 // if tile is not null, check the value, else go to next tile
-                if (b.tile(col, row) != null) {
-                    if (b.tile(col, row).value() == MAX_PIECE) {
+                if (tile != null) {
+                    if (tile.value() == MAX_PIECE) {
                         return true;
                     }
                 }
@@ -178,6 +179,62 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+
+        int len = b.size();
+        for (int row = 0; row < len; row++) {
+            for (int col = 0; col < len; col++) {
+                Tile tile = b.tile(col, row);
+                // if has left, compare current tile value to left tile value
+                if (tile != null) {
+                    // make sure left index did not out of bound
+                    if ((col - 1) >= 0) {
+                        // if left tile does exists some value, compare it with curr tile.
+                        Tile leftTile = b.tile(col - 1, row);
+                        if (leftTile != null) {
+                            if (tile.value() == leftTile.value()) {
+                                return true;
+                            }
+                        }
+                    }
+
+                    // make sure right index did not out of bound
+                    if ((col + 1) <= len - 1) {
+                        Tile rightTile = b.tile(col + 1, row);
+                        if (rightTile != null) {
+                            // if right tile do exists some value, compare it with curr tile.
+                            if (tile.value() == rightTile.value()) {
+                                return true;
+                            }
+                        }
+                    }
+
+                    // make sure down index did not out of bound
+                    if ((row - 1) >= 0) {
+                        Tile downTile = b.tile(col, row - 1);
+                        if (downTile != null) {
+                            // if down tile do exists some value, compare it with curr tile.
+                            if (tile.value() == downTile.value()) {
+                                return true;
+                            }
+                        }
+                    }
+
+                    // make sure up index did not out of bound
+                    if ((row + 1) <= len - 1) {
+                        Tile upTile = b.tile(col, row + 1);
+                        if (upTile != null) {
+                            // if up tile do exists some value, compare it with curr tile.
+                            if (tile.value() == upTile.value()) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return false;
     }
 
