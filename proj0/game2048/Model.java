@@ -114,6 +114,71 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        // clean solution that provided by cs61b folks that handles situation of
+        // move left, right, and down
+        // I've only implemented the solution to move up at below.
+        board.setViewingPerspective(side);
+
+        for (int c = 0; c < board.size(); c++) {
+            boolean merged = false;
+
+            // start moving from second last row
+            for (int r = board.size() - 2; r >= 0; r--) {
+                // find available move on above rows
+                Tile t = board.tile(c, r);
+                if (t != null) {
+                    for (int upRow = board.size() - 1; upRow > r && upRow > 0; upRow--) {
+                        // if this tile already merged before, then this tile is not
+                        // available to move anymore, go bottom row and find available move.
+                        if (merged) {
+                            merged = false;
+                            continue;
+                        }
+                        if (board.tile(c, upRow) == null || t.value() == board.tile(c, upRow).value()) {
+                            merged = board.move(c, upRow, t);
+                            if (merged) {
+                                score += t.value() * 2;
+                            }
+                            changed = true;
+                            //already moved, so no need find available move for current tile anymore
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        // int row = board.size() - 1;
+//        for (int r = board.size() - 1; r >= 0; r--) {
+//            for (int c = 0; c < board.size(); c++) {
+//                Tile t = board.tile(c, r);
+//                int moveUpUnit = 1;
+//                // have spaces directly upward, then check are those spaces occupied
+//                while ((r + moveUpUnit) < board.size() && t != null) {
+//                    // which means there's empty up space already check by below condition case,
+//                    // and now tile is about out of bound, so tile move to r + moveUpUnit - 1
+//                    if ((r + moveUpUnit) >= board.size()) {
+//                        board.move(c, r + moveUpUnit - 1, t);
+//                        break;
+//                    }
+//                    // has empty up space, continue to check more up spaces.
+//                    if (board.tile(c, r + moveUpUnit) == null) {
+//                        moveUpUnit ++;
+//                        // board.move(c, r + moveUpUnit, t);
+//                    }
+//                    // occupied, check is the up value diff or same with current value
+//                    else {
+//                        if (board.tile(c, r + moveUpUnit).value() == t.value()){
+//                            board.move(c, r + moveUpUnit, t);
+//                            score += t.value();
+//                            changed = true;
+//                        }
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
