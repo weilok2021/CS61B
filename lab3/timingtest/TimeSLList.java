@@ -23,6 +23,33 @@ public class TimeSLList {
 
     public static void timeGetLast() {
         // TODO: YOUR CODE HERE
+        int size = 1000;
+        AList sizeList = new AList();
+        AList timeList = new AList();
+        AList functionCall = new AList();
+
+        while (size < 128000) {
+            SLList testCall = new SLList();
+            int numCalls = 10000;
+            // add items to the list.
+            for (int i = 0; i < size; i++) {
+                testCall.addLast(i);
+            }
+
+            Stopwatch sw = new Stopwatch();
+            for (int j = 0; j < numCalls; j++) {
+                testCall.getLast();
+            }
+            // measure the time of calling getLast on different sizes of SLList
+            double timeInSeconds = sw.elapsedTime();
+            sizeList.addLast(size);
+            timeList.addLast(timeInSeconds);
+            functionCall.addLast(numCalls);
+            size *= 2;
+        }
+
+
+        printTimingTable(sizeList, timeList, functionCall);
     }
 
 }

@@ -78,6 +78,8 @@ public class IntListExercises {
             lst.first *= lst.first;
         }
 
+        // debugged by swapping the order of disjunction
+        // original bug: return currElemIsPrime || squarePrimes(lst.rest);
         return squarePrimes(lst.rest) || currElemIsPrime;
     }
 }
