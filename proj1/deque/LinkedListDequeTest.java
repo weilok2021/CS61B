@@ -6,6 +6,73 @@ import static org.junit.Assert.*;
 
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
+    @Test
+    public void sizeTest() {
+        LinkedListDeque L1 = new LinkedListDeque();
+        LinkedListDeque L2 = new LinkedListDeque(2);
+        for (int i = 0; i < 10; i++) {
+            L2.addFirst(i);
+        }
+        for (int i = 0; i < 10; i++) {
+            L1.addLast(i);
+        }
+
+        assertEquals(11, L2.size());
+        assertEquals(10, L1.size());
+    }
+
+    @Test
+    public void getTest() {
+        LinkedListDeque L1 = new LinkedListDeque();
+        LinkedListDeque L2 = new LinkedListDeque(3);
+        for (int i = 0; i < 10; i++) {
+            L1.addLast(i);
+            assertEquals(L1.get(i), i);
+        }
+
+        for (int j = 12; j >= 0; j--) {
+            L2.addFirst(j);
+        }
+
+        for (int k = 0; k <= 12; k++) {
+            assertEquals(L2.get(k), k);
+        }
+        assertEquals(L2.get(13), 3);
+    }
+    @Test
+    public void getFirstTest() {
+        LinkedListDeque L1 = new LinkedListDeque();
+        LinkedListDeque L2 = new LinkedListDeque(11);
+        assertEquals(L2.getFirst(), 11);
+        for (int i = 10; i >= 0; i--) {
+            L2.addFirst(i);
+        }
+        for (int i = 10; i >= 0; i--) {
+            L1.addFirst(i);
+        }
+        // assertEquals(L1.get(0), -100000);
+        // assertEquals(10, L2.get(0));
+        for (int j = 0; j <= 11; j++) {
+            assertEquals(L2.get(j), j);
+            //i++;
+        }
+        for (int j = 0; j <= 10; j++) {
+            assertEquals(L1.get(j), j);
+            //i++;
+        }
+    }
+
+    @Test
+    public void getLastTest() {
+        LinkedListDeque L1 = new LinkedListDeque();
+        LinkedListDeque L2 = new LinkedListDeque(0);
+        assertEquals(L2.getLast(), 0);
+        for (int i = 1; i <= 10; i++) {
+            L2.addLast(i);
+            assertEquals(i, L2.getLast());
+        }
+        // assertEquals(L2.get(2), 100);
+    }
 
     @Test
     /** Adds a few things to the list, checking isEmpty() and size() are correct,

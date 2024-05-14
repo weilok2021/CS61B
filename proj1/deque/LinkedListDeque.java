@@ -72,9 +72,19 @@ public class LinkedListDeque {
     }
 
     public int get(int i) {
-        Node p = sentinelF.next; //start from first item
+//        Node p = sentinelF.next; //start from first item
+//        while (i != 0) {
+//            // System.out.println(p.item);
+//            p = p.next;
+//            i--;
+//        }
+//        return p.item;
+
+        if (i < 0 || i >= size) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+        Node p = sentinelF.next; // Start from the first item
         while (i != 0) {
-            // System.out.println(p.item);
             p = p.next;
             i--;
         }
@@ -88,6 +98,6 @@ public class LinkedListDeque {
         for (int i = 1; i <= 10; i++) {
             L2.addLast(i);
         }
-        System.out.println(L2.get(11));
+        System.out.println(L2.get(0));
     }
 }
