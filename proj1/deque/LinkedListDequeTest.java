@@ -198,3 +198,15 @@ public class LinkedListDequeTest {
         }
     }
 }
+
+//    private void resize(int capacity) {
+//        Type[] a = (Type[]) new Object[capacity];
+//        int current = (nextFirst + 1) % items.length;
+//        for (int i = 0; i < size; i++) {
+//            a[i] = items[current];
+//            current = (current + 1) % items.length;
+//        }
+//        nextFirst = capacity - 1;
+//        nextLast = size;
+//        items = a;
+//    }
