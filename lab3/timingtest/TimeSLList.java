@@ -36,6 +36,7 @@ public class TimeSLList {
                 testCall.addLast(i);
             }
 
+            // start the timer
             Stopwatch sw = new Stopwatch();
             for (int j = 0; j < numCalls; j++) {
                 testCall.getLast();
