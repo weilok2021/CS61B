@@ -28,7 +28,7 @@ public class TimeAList {
         AList numFunctionCalls = new <Integer>AList();
         AList timePerCall = new <Double>AList();
 
-        while (n <= 10000000) {
+        while (n <= 128000) {
             AList testCall = new AList();
             Stopwatch sw = new Stopwatch();
             // double timeInSeconds = 0;
