@@ -1,4 +1,5 @@
 package deque;
+
 import static org.junit.Assert.assertEquals;
 
 /**  Invariance
@@ -9,9 +10,9 @@ import static org.junit.Assert.assertEquals;
  *      SentinelF.next is equals to Sentinel B.
  *      SentinelB.prev is equals to Sentinel F.
  * */
-public class CircularSentinelList<Type> {
-    private Node sentinel;
-    // private Node sentinelB;
+public class TwoSentinelsLinkedListDeque<Type> implements Deque<Type> {
+    private Node sentinelF;
+    private Node sentinelB;
     private int size;
 
     private class Node {
@@ -25,16 +26,20 @@ public class CircularSentinelList<Type> {
         }
     }
 
-    public CircularSentinelList() {
-        sentinel = new Node(sentinel,null, sentinel);
-        // sentinelB = new Node(null, null, null);
+    public TwoSentinelsLinkedListDeque() {
+        sentinelF = new Node(null,null, null);
+        sentinelB = new Node(null, null, null);
+        sentinelF.next = sentinelB;
+        sentinelB.prev = sentinelF;
         size = 0;
     }
-    public CircularSentinelList(Type i) {
-        sentinel = new Node(null, null, null);
-        Node firstNode = new Node(sentinel, i, sentinel);
-        sentinel.next = firstNode;
-        sentinel.prev = firstNode;
+    public TwoSentinelsLinkedListDeque(Type i) {
+        sentinelF = new Node(null, null, null);
+        sentinelB = new Node(null, null, null);
+        Node firstNode = new Node(sentinelF, i, sentinelB);
+
+        sentinelF.next = firstNode;
+        sentinelB.prev = firstNode;
 
         // chatgpt solution, shorter and cleaner
 //        this();
@@ -42,28 +47,28 @@ public class CircularSentinelList<Type> {
         size = 1;
     }
 
+    @Override
     public void addFirst(Type i) {
-        Node firstNode = new Node(sentinel, i, sentinel.next);
-        sentinel.next.prev = firstNode; // sentinelF.next.prev will either be sentinel or original firstNode
-        sentinel.next = firstNode; // insert new node into between sentinel and original first node
+        Node firstNode = new Node(sentinelF, i, sentinelF.next);
+        sentinelF.next.prev = firstNode; // sentinelF.next.prev will either be sentinelB or original firstNode
+        sentinelF.next = firstNode; // insert new node into between sentinelF and original first node
         size++;
     }
 
+    @Override
     public void addLast(Type i) {
-        Node lastNode = new Node(sentinel.prev, i, sentinel);
-        sentinel.prev.next = lastNode; // sentinel.prev.next is either sentinel or original last node
-        sentinel.prev = lastNode;
+        Node lastNode = new Node(sentinelB.prev, i, sentinelB);
+        sentinelB.prev.next = lastNode;
+        sentinelB.prev = lastNode;
         size++;
     }
 
-    public boolean isEmpty() {
-        return this.size() == 0;
-    }
-
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public void printDeque() {
         for (int i = 0; i < size() - 1; i++) {
             System.out.printf("%s --> ", get(i));
@@ -72,22 +77,24 @@ public class CircularSentinelList<Type> {
         // System.out.println();
     }
 
+    @Override
     public Type removeFirst() {
         if (this.isEmpty()) {
             return null;
         }
-        Type first = sentinel.next.item;
-        sentinel.next = sentinel.next.next;
+        Type first = sentinelF.next.item;
+        sentinelF.next = sentinelF.next.next;
         size--;
         return first;
     }
 
+    @Override
     public Type removeLast() {
         if (this.isEmpty()) {
             return null;
         }
-        Type last = sentinel.prev.item;
-        sentinel.prev = sentinel.prev.prev;
+        Type last = sentinelB.prev.item;
+        sentinelB.prev = sentinelB.prev.prev;
         size--;
         return last;
     }
@@ -96,20 +103,30 @@ public class CircularSentinelList<Type> {
         if (isEmpty()) {
             throw new IllegalStateException("List is empty");
         }
-        return sentinel.next.item;
+        return sentinelF.next.item;
     }
 
     public Type getLast() {
         if (isEmpty()) {
             throw new IllegalStateException("List is empty");
         }
-        return sentinel.prev.item;
+        return sentinelB.prev.item;
     }
+
+    @Override
     public Type get(int i) {
+//        Node p = sentinelF.next; //start from first item
+//        while (i != 0) {
+//            // System.out.println(p.item);
+//            p = p.next;
+//            i--;
+//        }
+//        return p.item;
+
         if (i < 0 || i >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
-        Node p = sentinel.next; // Start from the first item
+        Node p = sentinelF.next; // Start from the first item
         while (i != 0) {
             p = p.next;
             i--;
@@ -117,16 +134,16 @@ public class CircularSentinelList<Type> {
         return p.item;
     }
 
+
     public static void main(String[] args) {
         //LinkedListDeque L1 = new LinkedListDeque();
-        CircularSentinelList<Integer> L2 = new CircularSentinelList<>(100);
-        CircularSentinelList<Integer> L1 = new CircularSentinelList<>();
+        TwoSentinelsLinkedListDeque<Integer> L2 = new TwoSentinelsLinkedListDeque<>(100);
+        TwoSentinelsLinkedListDeque<Integer> L1 = new TwoSentinelsLinkedListDeque<>();
         for (int i = 1; i <= 10; i++) {
             L2.addFirst(i);
         }
         L2.printDeque();
 //        System.out.println(L1.getFirst());
 //        System.out.println(L1.getLast());
-
     }
 }

@@ -51,15 +51,16 @@ public class ArrayDequeTest {
         for (int i = 10; i >= 0; i--) {
             L2.addFirst(i);
         }
+
         for (int i = 10; i >= 0; i--) {
             L1.addFirst(i);
         }
-        // assertEquals(L1.get(0), -100000);
-        // assertEquals(10, L2.get(0));
+
         for (int j = 0; j <= 10; j++) {
             assertEquals(L2.get(j), j);
             //i++;
         }
+
         for (int j = 0; j <= 10; j++) {
             assertEquals(L1.get(j), j);
             //i++;

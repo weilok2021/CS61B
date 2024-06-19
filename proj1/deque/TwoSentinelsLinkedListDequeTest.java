@@ -1,17 +1,16 @@
 package deque;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
+
 
 /** Performs some basic linked list tests. */
-public class CircularSentinelListTest {
+public class TwoSentinelsLinkedListDequeTest {
     @Test
     public void sizeTest() {
-        LinkedListDeque<Integer> L1 = new LinkedListDeque<>();
-        LinkedListDeque<Integer> L2 = new LinkedListDeque<>(2);
-        LinkedListDeque<Integer> L3 = new LinkedListDeque<>();
+        TwoSentinelsLinkedListDeque<Integer> L1 = new TwoSentinelsLinkedListDeque<>();
+        TwoSentinelsLinkedListDeque<Integer> L2 = new TwoSentinelsLinkedListDeque<>(2);
+        TwoSentinelsLinkedListDeque<Integer> L3 = new TwoSentinelsLinkedListDeque<>();
 
         for (int i = 0; i < 10; i++) {
             L2.addFirst(i);
@@ -27,8 +26,8 @@ public class CircularSentinelListTest {
 
     @Test
     public void getTest() {
-        LinkedListDeque L1 = new LinkedListDeque();
-        LinkedListDeque L2 = new LinkedListDeque(3);
+        TwoSentinelsLinkedListDeque L1 = new TwoSentinelsLinkedListDeque();
+        TwoSentinelsLinkedListDeque L2 = new TwoSentinelsLinkedListDeque(3);
         for (int i = 0; i < 10; i++) {
             L1.addLast(i);
             assertEquals(L1.get(i), i);
@@ -45,8 +44,8 @@ public class CircularSentinelListTest {
     }
     @Test
     public void getFirstTest() {
-        LinkedListDeque L1 = new LinkedListDeque();
-        LinkedListDeque L2 = new LinkedListDeque(11);
+        TwoSentinelsLinkedListDeque L1 = new TwoSentinelsLinkedListDeque();
+        TwoSentinelsLinkedListDeque L2 = new TwoSentinelsLinkedListDeque(11);
         assertEquals(L2.getFirst(), 11);
         for (int i = 10; i >= 0; i--) {
             L2.addFirst(i);
@@ -68,8 +67,8 @@ public class CircularSentinelListTest {
 
     @Test
     public void getLastTest() {
-        LinkedListDeque L1 = new LinkedListDeque();
-        LinkedListDeque L2 = new LinkedListDeque(0);
+        TwoSentinelsLinkedListDeque L1 = new TwoSentinelsLinkedListDeque();
+        TwoSentinelsLinkedListDeque L2 = new TwoSentinelsLinkedListDeque(0);
         assertEquals(L2.getLast(), 0);
         for (int i = 1; i <= 10; i++) {
             L2.addLast(i);
@@ -87,24 +86,24 @@ public class CircularSentinelListTest {
 
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
+        TwoSentinelsLinkedListDeque<String> lld1 = new TwoSentinelsLinkedListDeque<String>();
 
-        assertTrue("A newly initialized LLDeque should be empty", lld1.isEmpty());
-        lld1.addFirst("front");
+		assertTrue("A newly initialized LLDeque should be empty", lld1.isEmpty());
+		lld1.addFirst("front");
 
-        // The && operator is the same as "and" in Python.
-        // It's a binary operator that returns true if both arguments true, and false otherwise.
+		// The && operator is the same as "and" in Python.
+		// It's a binary operator that returns true if both arguments true, and false otherwise.
         assertEquals(1, lld1.size());
         assertFalse("lld1 should now contain 1 item", lld1.isEmpty());
 
-        lld1.addLast("middle");
-        assertEquals(2, lld1.size());
+		lld1.addLast("middle");
+		assertEquals(2, lld1.size());
 
-        lld1.addLast("back");
-        assertEquals(3, lld1.size());
+		lld1.addLast("back");
+		assertEquals(3, lld1.size());
 
-        System.out.println("Printing out deque: ");
-        lld1.printDeque();
+		System.out.println("Printing out deque: ");
+		lld1.printDeque();
     }
 
     @Test
@@ -113,17 +112,17 @@ public class CircularSentinelListTest {
 
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
-        // should be empty
-        assertTrue("lld1 should be empty upon initialization", lld1.isEmpty());
+        TwoSentinelsLinkedListDeque<Integer> lld1 = new TwoSentinelsLinkedListDeque<Integer>();
+		// should be empty
+		assertTrue("lld1 should be empty upon initialization", lld1.isEmpty());
 
-        lld1.addFirst(10);
-        // should not be empty
-        assertFalse("lld1 should contain 1 item", lld1.isEmpty());
+		lld1.addFirst(10);
+		// should not be empty
+		assertFalse("lld1 should contain 1 item", lld1.isEmpty());
 
-        lld1.removeFirst();
-        // should be empty
-        assertTrue("lld1 should be empty after removal", lld1.isEmpty());
+		lld1.removeFirst();
+		// should be empty
+		assertTrue("lld1 should be empty after removal", lld1.isEmpty());
 
     }
 
@@ -133,7 +132,7 @@ public class CircularSentinelListTest {
 
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
+        TwoSentinelsLinkedListDeque<Integer> lld1 = new TwoSentinelsLinkedListDeque<>();
         lld1.addFirst(3);
 
         lld1.removeLast();
@@ -154,9 +153,9 @@ public class CircularSentinelListTest {
     /* Check if you can create LinkedListDeques with different parameterized types*/
     public void multipleParamTest() {
 
-        LinkedListDeque<String>  lld1 = new LinkedListDeque<String>();
-        LinkedListDeque<Double>  lld2 = new LinkedListDeque<Double>();
-        LinkedListDeque<Boolean> lld3 = new LinkedListDeque<Boolean>();
+        TwoSentinelsLinkedListDeque<String> lld1 = new TwoSentinelsLinkedListDeque<String>();
+        TwoSentinelsLinkedListDeque<Double> lld2 = new TwoSentinelsLinkedListDeque<Double>();
+        TwoSentinelsLinkedListDeque<Boolean> lld3 = new TwoSentinelsLinkedListDeque<Boolean>();
 
         lld1.addFirst("string");
         lld2.addFirst(3.14159);
@@ -173,7 +172,7 @@ public class CircularSentinelListTest {
     public void emptyNullReturnTest() {
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        TwoSentinelsLinkedListDeque<Integer> lld1 = new TwoSentinelsLinkedListDeque<Integer>();
 
         boolean passed1 = false;
         boolean passed2 = false;
@@ -185,7 +184,7 @@ public class CircularSentinelListTest {
     /* Add large number of elements to deque; check if order is correct. */
     public void bigLLDequeTest() {
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        TwoSentinelsLinkedListDeque<Integer> lld1 = new TwoSentinelsLinkedListDeque<Integer>();
         for (int i = 0; i < 1000000; i++) {
             lld1.addLast(i);
         }
@@ -200,4 +199,14 @@ public class CircularSentinelListTest {
     }
 }
 
-
+//    private void resize(int capacity) {
+//        Type[] a = (Type[]) new Object[capacity];
+//        int current = (nextFirst + 1) % items.length;
+//        for (int i = 0; i < size; i++) {
+//            a[i] = items[current];
+//            current = (current + 1) % items.length;
+//        }
+//        nextFirst = capacity - 1;
+//        nextLast = size;
+//        items = a;
+//    }

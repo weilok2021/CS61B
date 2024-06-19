@@ -1,18 +1,16 @@
 package deque;
-
 import static org.junit.Assert.assertEquals;
 
 /**  Invariance
- * SentinelF.next always equals to the first node of the linked list
- * SentinelB.next always equals to the last node of the linked list.
+ * sentinel.next is always equals to either first node or sentinel itself
+ * sentinel.prev is always equals to either last node or sentinel itself
+ * this creates a circular structure
  * the size variable is always equals to the number of items in list.
- * Edge cases (Empty List):
- *      SentinelF.next is equals to Sentinel B.
- *      SentinelB.prev is equals to Sentinel F.
  * */
-public class LinkedListDeque<Type> implements Deque<Type> {
-    private Node sentinelF;
-    private Node sentinelB;
+
+public class LinkedListDeque<Type> implements Deque<Type>{
+    private Node sentinel;
+    // private Node sentinelB;
     private int size;
 
     private class Node {
@@ -27,20 +25,17 @@ public class LinkedListDeque<Type> implements Deque<Type> {
     }
 
     public LinkedListDeque() {
-        sentinelF = new Node(null,null, null);
-        sentinelB = new Node(null, null, null);
-        sentinelF.next = sentinelB;
-        sentinelB.prev = sentinelF;
+        sentinel = new Node(null, null, null);
+        sentinel.next = sentinel;
+        sentinel.prev = sentinel;
         size = 0;
     }
+
     public LinkedListDeque(Type i) {
-        sentinelF = new Node(null, null, null);
-        sentinelB = new Node(null, null, null);
-        Node firstNode = new Node(sentinelF, i, sentinelB);
-
-        sentinelF.next = firstNode;
-        sentinelB.prev = firstNode;
-
+        sentinel = new Node(null, null, null);
+        Node firstNode = new Node(sentinel, i, sentinel);
+        sentinel.next = firstNode;
+        sentinel.prev = firstNode;
         // chatgpt solution, shorter and cleaner
 //        this();
 //        addFirst(i);
@@ -49,17 +44,17 @@ public class LinkedListDeque<Type> implements Deque<Type> {
 
     @Override
     public void addFirst(Type i) {
-        Node firstNode = new Node(sentinelF, i, sentinelF.next);
-        sentinelF.next.prev = firstNode; // sentinelF.next.prev will either be sentinelB or original firstNode
-        sentinelF.next = firstNode; // insert new node into between sentinelF and original first node
+        Node firstNode = new Node(sentinel, i, sentinel.next);
+        sentinel.next.prev = firstNode; // sentinelF.next.prev will either be sentinel or original firstNode
+        sentinel.next = firstNode; // insert new node into between sentinel and original first node
         size++;
     }
 
     @Override
     public void addLast(Type i) {
-        Node lastNode = new Node(sentinelB.prev, i, sentinelB);
-        sentinelB.prev.next = lastNode;
-        sentinelB.prev = lastNode;
+        Node lastNode = new Node(sentinel.prev, i, sentinel);
+        sentinel.prev.next = lastNode; // sentinel.prev.next is either sentinel or original last node
+        sentinel.prev = lastNode;
         size++;
     }
 
@@ -82,8 +77,9 @@ public class LinkedListDeque<Type> implements Deque<Type> {
         if (this.isEmpty()) {
             return null;
         }
-        Type first = sentinelF.next.item;
-        sentinelF.next = sentinelF.next.next;
+        Type first = sentinel.next.item;
+        sentinel.next = sentinel.next.next; // sentinel points to new firstnode
+        sentinel.next.prev = sentinel; // new firstnode point to sentinel
         size--;
         return first;
     }
@@ -93,8 +89,9 @@ public class LinkedListDeque<Type> implements Deque<Type> {
         if (this.isEmpty()) {
             return null;
         }
-        Type last = sentinelB.prev.item;
-        sentinelB.prev = sentinelB.prev.prev;
+        Type last = sentinel.prev.item;
+        sentinel.prev = sentinel.prev.prev; // sentinel point to new lastnode
+        sentinel.prev.next = sentinel; // new lastnode point to sentinel
         size--;
         return last;
     }
@@ -103,35 +100,42 @@ public class LinkedListDeque<Type> implements Deque<Type> {
         if (isEmpty()) {
             throw new IllegalStateException("List is empty");
         }
-        return sentinelF.next.item;
+        return sentinel.next.item;
     }
 
     public Type getLast() {
         if (isEmpty()) {
             throw new IllegalStateException("List is empty");
         }
-        return sentinelB.prev.item;
+        return sentinel.prev.item;
     }
 
     @Override
     public Type get(int i) {
-//        Node p = sentinelF.next; //start from first item
-//        while (i != 0) {
-//            // System.out.println(p.item);
-//            p = p.next;
-//            i--;
-//        }
-//        return p.item;
-
         if (i < 0 || i >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
-        Node p = sentinelF.next; // Start from the first item
-        while (i != 0) {
+        Node p = sentinel.next; // Start from the first item
+
+        for (int j = 0; j < i; j++) {
             p = p.next;
-            i--;
         }
         return p.item;
+    }
+
+    // getRecursive helper method
+    private Type getRecursive(int i, Node p) {
+        if (i < 0 || i >= size) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+        if (i == 0 && p != null) {
+            return p.item;
+        }
+        return getRecursive(i - 1, p.next);
+    }
+
+    public Type getRecursive(int i) {
+        return getRecursive(i, sentinel.next);
     }
 
     public static void main(String[] args) {
@@ -142,7 +146,5 @@ public class LinkedListDeque<Type> implements Deque<Type> {
             L2.addFirst(i);
         }
         L2.printDeque();
-//        System.out.println(L1.getFirst());
-//        System.out.println(L1.getLast());
     }
 }

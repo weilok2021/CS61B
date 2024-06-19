@@ -1,15 +1,18 @@
 package deque;
 
 /**
- * nextFirst + 1 is the current First
- * nextLast - 1 is the current Last
+ * (nextFirst + 1) % items.length is the current First
+ * (nextLast - 1 + items.length) % items.length  is the current Last
+ * use modulo here to make the array index circular within front and back
+ * (nextLast - 1 + items.length) Note: + items.length here to avoid negative index
+ * This invariance ensure the circular approach works well (Most likely for now??)
  */
+
 public class ArrayDeque<Type> implements Deque<Type>{
     private Type[] items;
     private int size;
     private int nextFirst;
     private int nextLast;
-
 
     public ArrayDeque() {
         size = 0;
@@ -17,23 +20,6 @@ public class ArrayDeque<Type> implements Deque<Type>{
         nextFirst = items.length / 2;
         nextLast = (items.length / 2) + 1;
     }
-
-    // the copying process only copy the existing item in the array
-    // it copies according to real size of array, but not exactly the whole array
-    // it saves some time and memory, I guess??
-//    private void resize(int capacity) {
-//        Type[] a = (Type[]) new Object[capacity];
-//        int t = 0;
-//        int firstIndex = (nextFirst + 1) % items.length;
-//        while (t < size) {
-//            //copy items from original array to the resized array according to corresponding index.
-//            a[firstIndex] = items[firstIndex];
-//            firstIndex = (firstIndex + 1) % items.length;
-//            t++;
-//        }
-//        nextLast = (firstIndex + 1) % items.length;
-//        items = a; // keep the resized array, lost the original reference
-//    }
 
     private void resize(int capacity) {
         Type[] a = (Type[]) new Object[capacity];
@@ -116,9 +102,9 @@ public class ArrayDeque<Type> implements Deque<Type>{
             if (items.length >= 16 && ((float) size / items.length) <= 0.25) {
                 resize(items.length / 2);
             }
-            Type lastItem = items[(nextLast - 1) % items.length];
-            items[(nextLast - 1) % items.length] = null;
-            nextLast = (nextLast - 1) % items.length;
+            Type lastItem = items[(nextLast - 1 + items.length) % items.length];
+            items[(nextLast - 1 + items.length) % items.length] = null;
+            nextLast = (nextLast - 1 + items.length) % items.length;
             size--;
             return lastItem;
         }
@@ -133,6 +119,14 @@ public class ArrayDeque<Type> implements Deque<Type>{
         return items[(nextFirst + 1 + i) % items.length];
     }
 
+    public Type getLast() {
+        return items[(nextLast - 1 + items.length) % items.length];
+    }
+
+    public Type getFirst() {
+        return items[(nextFirst + 1) % items.length];
+    }
+
     public static void main(String[] args) {
         ArrayDeque<Integer> L1 = new ArrayDeque<>();
         L1.addFirst(4);
@@ -145,14 +139,5 @@ public class ArrayDeque<Type> implements Deque<Type>{
         System.out.println(L1.size());
 
         L1.printDeque();
-
-//        ArrayDeque<Integer> lld1 = new ArrayDeque<>();
-//        lld1.addFirst(3);
-//
-//        lld1.removeLast();
-//        lld1.removeFirst();
-//        lld1.removeLast();
-//        lld1.removeFirst();
-
     }
 }
