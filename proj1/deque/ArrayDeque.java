@@ -126,18 +126,4 @@ public class ArrayDeque<Type> implements Deque<Type>{
     public Type getFirst() {
         return items[(nextFirst + 1) % items.length];
     }
-
-    public static void main(String[] args) {
-        ArrayDeque<Integer> L1 = new ArrayDeque<>();
-        L1.addFirst(4);
-        System.out.println(L1.isEmpty());
-        L1.addLast(1);
-        L1.addLast(2);
-        L1.addLast(3);
-        L1.addFirst(10);
-        System.out.println(L1.removeFirst());
-        System.out.println(L1.size());
-
-        L1.printDeque();
-    }
 }

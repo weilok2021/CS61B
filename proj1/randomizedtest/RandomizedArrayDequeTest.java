@@ -15,13 +15,6 @@ public class RandomizedArrayDequeTest {
     public void randomizedTest() {
         ArrayDeque<Integer> L = new ArrayDeque<>();
 
-//        for (int i = 9999; i >= 0; i--) {
-//            L.addFirst(i);
-//        }
-//        for (int i = 0; i < 10000; i++) {
-//            assertEquals(L.get(i), (Integer) i);
-//        }
-
         int N = 5000;
         for (int i = 0; i < N; i += 1) {
             int operationNumber = StdRandom.uniform(0, 6);

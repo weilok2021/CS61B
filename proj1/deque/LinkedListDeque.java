@@ -137,14 +137,4 @@ public class LinkedListDeque<Type> implements Deque<Type>{
     public Type getRecursive(int i) {
         return getRecursive(i, sentinel.next);
     }
-
-    public static void main(String[] args) {
-        //LinkedListDeque L1 = new LinkedListDeque();
-        LinkedListDeque<Integer> L2 = new LinkedListDeque<>(100);
-        LinkedListDeque<Integer> L1 = new LinkedListDeque<>();
-        for (int i = 1; i <= 10; i++) {
-            L2.addFirst(i);
-        }
-        L2.printDeque();
-    }
 }
