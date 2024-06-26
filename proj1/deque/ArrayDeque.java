@@ -1,4 +1,5 @@
 package deque;
+import java.util.Iterator;
 
 /**
  * (nextFirst + 1) % items.length is the current First
@@ -8,7 +9,7 @@ package deque;
  * This invariance ensure the circular approach works well (Most likely for now??)
  */
 
-public class ArrayDeque<Type> implements Deque<Type>{
+public class ArrayDeque<Type> implements Deque<Type>, Iterable<Type>{
     private Type[] items;
     private int size;
     private int nextFirst;
@@ -19,6 +20,48 @@ public class ArrayDeque<Type> implements Deque<Type>{
         items = (Type[]) new Object[8];
         nextFirst = items.length / 2;
         nextLast = (items.length / 2) + 1;
+    }
+
+    public Iterator<Type> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    private class ArrayDequeIterator implements Iterator<Type> {
+        int currentPos;
+
+        public ArrayDequeIterator() {
+            currentPos = 0;
+        }
+
+        public boolean hasNext() {
+            return currentPos < size;
+        }
+
+        public Type next() {
+            Type returnItem = get(currentPos);
+            currentPos++;
+            return returnItem;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o instanceof ArrayDeque otherArray) {
+            if (this.size() != otherArray.size()) {
+                return false;
+            }
+            for (int i = 0; i < this.size(); i++) {
+                if (this.get(i) != otherArray.get(i)) {
+                    return false;
+                }
+            }
+            // otherwise, the 2 arraydeque are equal.
+            return true;
+        }
+        return false;
     }
 
     private void resize(int capacity) {
@@ -73,12 +116,17 @@ public class ArrayDeque<Type> implements Deque<Type>{
         // O(n)
         int t = 0;
         int firstIndex = (nextFirst + 1) % items.length;
-        while (t < items.length) {
+        System.out.print("(");
+        for (int i = 0; i < size(); i++) {
             System.out.print(items[firstIndex] + " ");
             firstIndex = (firstIndex + 1) % items.length;
-            t++;
         }
-        System.out.println("");
+//        while (t < items.length) {
+//            System.out.print(items[firstIndex] + " ");
+//            firstIndex = (firstIndex + 1) % items.length;
+//            t++;
+//        }
+        System.out.println(")");
     }
 
     @Override

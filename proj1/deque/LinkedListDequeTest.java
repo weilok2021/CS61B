@@ -198,6 +198,41 @@ public class LinkedListDequeTest {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
     }
+
+    @Test
+    public void equalTest() {
+        Deque<Integer> l1 = new LinkedListDeque<>();
+        Deque<Integer> l2 = new LinkedListDeque<>();
+
+        assertTrue(l1.equals(l2));
+
+        for (int i = 0; i < 10; i++) {
+            l1.addLast(i);
+            l2.addLast(i);
+        }
+        assertTrue(l1.equals(l2));
+
+        l1.removeLast();
+        assertFalse(l1.equals(l2));
+
+    }
+
+    @Test
+    public void forEachLoopTest() {
+        LinkedListDeque<Integer> l1 = new LinkedListDeque<>();
+        LinkedListDeque<Integer> l2 = new LinkedListDeque<>();
+
+        for (int i = 0; i < 1000; i++) {
+            l1.addLast(i);
+        }
+
+        for (Integer n: l1) {
+            System.out.println(n);
+        }
+        for (Integer n: l2) {
+            System.out.println(n);
+        }
+    }
 }
 
 

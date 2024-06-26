@@ -13,7 +13,7 @@ import java.util.zip.GZIPInputStream;
  * @author Eli Lipsitz
  */
 public class TTFAF {
-    public static void main(String[] args) 
+    public static void main(String[] args) {
         try {
             InputStream source = new ByteArrayInputStream(Base64.getDecoder().decode(TTFAF));
             source = new GZIPInputStream(source);

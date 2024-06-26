@@ -187,4 +187,39 @@ public class ArrayDequeTest {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
     }
+
+    @Test
+    public void equalTest() {
+        Deque<Integer> a1 = new ArrayDeque<>();
+        Deque<Integer> a2 = new ArrayDeque<>();
+
+        assertTrue(a1.equals(a2));
+
+        for (int i = 0; i < 10; i++) {
+            a1.addLast(i);
+            a2.addLast(i);
+        }
+        assertTrue(a1.equals(a2));
+
+        a1.removeLast();
+        assertFalse(a1.equals(a2));
+
+    }
+
+    @Test
+    public void forEachLoopTest() {
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
+        ArrayDeque<Integer> a2 = new ArrayDeque<>();
+
+        for (int i = 0; i < 1000; i++) {
+            a1.addLast(i);
+        }
+
+        for (Integer n: a1) {
+            System.out.println(n);
+        }
+        for (Integer n: a2) {
+            System.out.println(n);
+        }
+    }
 }

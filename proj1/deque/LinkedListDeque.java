@@ -1,5 +1,7 @@
 package deque;
 import static org.junit.Assert.assertEquals;
+import java.util.Iterator;
+
 
 /**  Invariance
  * sentinel.next is always equals to either first node or sentinel itself
@@ -8,7 +10,7 @@ import static org.junit.Assert.assertEquals;
  * the size variable is always equals to the number of items in list.
  * */
 
-public class LinkedListDeque<Type> implements Deque<Type>{
+public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
     private Node sentinel;
     // private Node sentinelB;
     private int size;
@@ -42,6 +44,59 @@ public class LinkedListDeque<Type> implements Deque<Type>{
         size = 1;
     }
 
+    public Iterator<Type> iterator() {
+        return new LinkedListDequeIterator();
+    }
+
+    private class LinkedListDequeIterator implements Iterator<Type> {
+        private int currentPos;
+        private Node p = sentinel.next; // the first item in linkedlist
+
+        public LinkedListDequeIterator() {
+            currentPos = 0;
+        }
+
+        public boolean hasNext() {
+            return currentPos < size;
+        }
+
+        /** I try to avoid using get method in linked list because it takes O(n) time
+         * every time we called L.get(i).
+         * Cons: easier to get bug if I am traversing nodes through pointers.
+         * */
+        public Type next() {
+            // Type returnItem = get(currentPos); very slow when size is large
+             Type returnItem = p.item;
+             p = p.next;
+            currentPos++;
+            return returnItem;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        // o is the identical object as this, return true immediately
+        if (this == o) {
+            return true;
+        }
+
+        if (o instanceof LinkedListDeque otherObject) {
+            // different size indicates different list
+            if (this.size() != otherObject.size()) {
+                return false;
+            }
+
+            // verify the equality of corresponding elements in both list.
+            for (int i = 0; i < this.size(); i++) {
+                if (this.get(i) != otherObject.get(i)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void addFirst(Type i) {
         Node firstNode = new Node(sentinel, i, sentinel.next);
@@ -65,11 +120,16 @@ public class LinkedListDeque<Type> implements Deque<Type>{
 
     @Override
     public void printDeque() {
+        if (isEmpty()) {
+            System.out.println("()");
+            return;
+        }
+        System.out.print("(");
         for (int i = 0; i < size() - 1; i++) {
             System.out.printf("%s --> ", get(i));
         }
-        System.out.println(get(size - 1));
-        // System.out.println();
+        System.out.print(get(size - 1));
+        System.out.println(")");
     }
 
     @Override
