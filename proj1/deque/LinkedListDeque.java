@@ -1,5 +1,4 @@
 package deque;
-import static org.junit.Assert.assertEquals;
 import java.util.Iterator;
 
 
@@ -50,7 +49,7 @@ public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
 
     private class LinkedListDequeIterator implements Iterator<Type> {
         private int currentPos;
-        private Node p = sentinel.next; // the first item in linkedlist
+        // private Node p = sentinel.next; // the first item in linkedlist
 
         public LinkedListDequeIterator() {
             currentPos = 0;
@@ -65,37 +64,62 @@ public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
          * Cons: easier to get bug if I am traversing nodes through pointers.
          * */
         public Type next() {
-            // Type returnItem = get(currentPos); very slow when size is large
-             Type returnItem = p.item;
-             p = p.next;
-            currentPos++;
-            return returnItem;
+            Type returnItem = get(currentPos); // very slow when size is large
+//             Type returnItem = p.item;
+//             p = p.next;
+             currentPos++;
+             return returnItem;
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        // o is the identical object as this, return true immediately
-        if (this == o) {
-            return true;
-        }
+//    @Override
+//    public boolean equals(Object o) {
+//        // o is the identical object as this, return true immediately
+//        if (this == o) {
+//            return true;
+//        }
+//
+//        if (o instanceof LinkedListDeque otherObject) {
+//            // different size indicates different list
+//            if (this.size() != otherObject.size()) {
+//                return false;
+//            }
+//
+//            // verify the equality of corresponding elements in both list.
+//            for (int i = 0; i < this.size(); i++) {
+//                if (this.get(i) != otherObject.get(i)) {
+//                    return false;
+//                }
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
 
-        if (o instanceof LinkedListDeque otherObject) {
-            // different size indicates different list
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            LinkedListDeque<?> otherObject = (LinkedListDeque<?>) o;
             if (this.size() != otherObject.size()) {
                 return false;
             }
-
-            // verify the equality of corresponding elements in both list.
             for (int i = 0; i < this.size(); i++) {
-                if (this.get(i) != otherObject.get(i)) {
+                if (!this.get(i).equals(otherObject.get(i))) {  // Use equals for proper object comparison
                     return false;
                 }
             }
+            // otherwise, the 2 linkedlistdeque are equal.
             return true;
         }
-        return false;
-    }
+
+
+
+
 
     @Override
     public void addFirst(Type i) {

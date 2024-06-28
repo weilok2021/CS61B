@@ -44,24 +44,45 @@ public class ArrayDeque<Type> implements Deque<Type>, Iterable<Type>{
         }
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o instanceof ArrayDeque otherArray) {
+//            if (this.size() != otherArray.size()) {
+//                return false;
+//            }
+//            for (int i = 0; i < this.size(); i++) {
+//                if (this.get(i) != otherArray.get(i)) {
+//                    return false;
+//                }
+//            }
+//            // otherwise, the 2 arraydeque are equal.
+//            return true;
+//        }
+//        return false;
+//    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o instanceof ArrayDeque otherArray) {
-            if (this.size() != otherArray.size()) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ArrayDeque<?> otherArray = (ArrayDeque<?>) o;
+        if (this.size() != otherArray.size()) {
+            return false;
+        }
+        for (int i = 0; i < this.size(); i++) {
+            if (!this.get(i).equals(otherArray.get(i))) {  // Use equals for proper object comparison
                 return false;
             }
-            for (int i = 0; i < this.size(); i++) {
-                if (this.get(i) != otherArray.get(i)) {
-                    return false;
-                }
-            }
-            // otherwise, the 2 arraydeque are equal.
-            return true;
         }
-        return false;
+        // otherwise, the 2 arraydeque are equal.
+        return true;
     }
 
     private void resize(int capacity) {
