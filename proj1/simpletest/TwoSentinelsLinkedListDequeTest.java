@@ -1,5 +1,6 @@
-package deque;
+package simpletest;
 
+import deque.TwoSentinelsLinkedListDeque;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

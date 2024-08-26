@@ -1,16 +1,20 @@
-package deque;
+package simpletest;
 
+import deque.Deque;
+import deque.LinkedListDeque;
+import deque.TwoSentinelsLinkedListDeque;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /** Performs some basic linked list tests. */
-public class ArrayDequeTest {
+public class LinkedListDequeTest {
     @Test
     public void sizeTest() {
-        ArrayDeque<Integer> L1 = new ArrayDeque<>();
-        ArrayDeque<Integer> L2 = new ArrayDeque<>();
-        ArrayDeque<Integer> L3 = new ArrayDeque<>();
+        TwoSentinelsLinkedListDeque<Integer> L1 = new TwoSentinelsLinkedListDeque<>();
+        TwoSentinelsLinkedListDeque<Integer> L2 = new TwoSentinelsLinkedListDeque<>(2);
+        TwoSentinelsLinkedListDeque<Integer> L3 = new TwoSentinelsLinkedListDeque<>();
 
         for (int i = 0; i < 10; i++) {
             L2.addFirst(i);
@@ -19,15 +23,15 @@ public class ArrayDequeTest {
             L1.addLast(i);
         }
 
-        assertEquals(10, L2.size());
+        assertEquals(11, L2.size());
         assertEquals(10, L1.size());
         assertEquals(0, L3.size());
     }
 
     @Test
     public void getTest() {
-        ArrayDeque L1 = new ArrayDeque();
-        ArrayDeque L2 = new ArrayDeque();
+        TwoSentinelsLinkedListDeque L1 = new TwoSentinelsLinkedListDeque();
+        TwoSentinelsLinkedListDeque L2 = new TwoSentinelsLinkedListDeque(3);
         for (int i = 0; i < 10; i++) {
             L1.addLast(i);
             assertEquals(L1.get(i), i);
@@ -40,31 +44,41 @@ public class ArrayDequeTest {
         for (int k = 0; k <= 12; k++) {
             assertEquals(L2.get(k), k);
         }
-        assertEquals(L2.get(12), 12);
+        assertEquals(L2.get(13), 3);
     }
-
     @Test
     public void getFirstTest() {
-        ArrayDeque L1 = new ArrayDeque();
-        ArrayDeque L2 = new ArrayDeque();
-
+        TwoSentinelsLinkedListDeque L1 = new TwoSentinelsLinkedListDeque();
+        TwoSentinelsLinkedListDeque L2 = new TwoSentinelsLinkedListDeque(11);
+        assertEquals(L2.getFirst(), 11);
         for (int i = 10; i >= 0; i--) {
             L2.addFirst(i);
         }
-
         for (int i = 10; i >= 0; i--) {
             L1.addFirst(i);
         }
-
-        for (int j = 0; j <= 10; j++) {
+        // assertEquals(L1.get(0), -100000);
+        // assertEquals(10, L2.get(0));
+        for (int j = 0; j <= 11; j++) {
             assertEquals(L2.get(j), j);
             //i++;
         }
-
         for (int j = 0; j <= 10; j++) {
             assertEquals(L1.get(j), j);
             //i++;
         }
+    }
+
+    @Test
+    public void getLastTest() {
+        TwoSentinelsLinkedListDeque L1 = new TwoSentinelsLinkedListDeque();
+        TwoSentinelsLinkedListDeque L2 = new TwoSentinelsLinkedListDeque(0);
+        assertEquals(L2.getLast(), 0);
+        for (int i = 1; i <= 10; i++) {
+            L2.addLast(i);
+            assertEquals(i, L2.getLast());
+        }
+        // assertEquals(L2.get(2), 100);
     }
 
     @Test
@@ -76,7 +90,7 @@ public class ArrayDequeTest {
 
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        ArrayDeque<String> lld1 = new ArrayDeque<String>();
+        TwoSentinelsLinkedListDeque<String> lld1 = new TwoSentinelsLinkedListDeque<String>();
 
         assertTrue("A newly initialized LLDeque should be empty", lld1.isEmpty());
         lld1.addFirst("front");
@@ -102,11 +116,11 @@ public class ArrayDequeTest {
 
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
+        TwoSentinelsLinkedListDeque<Integer> lld1 = new TwoSentinelsLinkedListDeque<Integer>();
         // should be empty
         assertTrue("lld1 should be empty upon initialization", lld1.isEmpty());
 
-        lld1.addFirst(10);
+        lld1.addLast(10);
         // should not be empty
         assertFalse("lld1 should contain 1 item", lld1.isEmpty());
 
@@ -122,7 +136,7 @@ public class ArrayDequeTest {
 
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        ArrayDeque<Integer> lld1 = new ArrayDeque<>();
+        TwoSentinelsLinkedListDeque<Integer> lld1 = new TwoSentinelsLinkedListDeque<>();
         lld1.addFirst(3);
 
         lld1.removeLast();
@@ -140,12 +154,12 @@ public class ArrayDequeTest {
     }
 
     @Test
-    /* Check if you can create ArrayDeques with different parameterized types*/
+    /* Check if you can create LinkedListDeques with different parameterized types*/
     public void multipleParamTest() {
 
-        ArrayDeque<String>  lld1 = new ArrayDeque<String>();
-        ArrayDeque<Double>  lld2 = new ArrayDeque<Double>();
-        ArrayDeque<Boolean> lld3 = new ArrayDeque<Boolean>();
+        TwoSentinelsLinkedListDeque<String> lld1 = new TwoSentinelsLinkedListDeque<String>();
+        TwoSentinelsLinkedListDeque<Double> lld2 = new TwoSentinelsLinkedListDeque<Double>();
+        TwoSentinelsLinkedListDeque<Boolean> lld3 = new TwoSentinelsLinkedListDeque<Boolean>();
 
         lld1.addFirst("string");
         lld2.addFirst(3.14159);
@@ -158,11 +172,11 @@ public class ArrayDequeTest {
     }
 
     @Test
-    /* check if null is return when removing from an empty ArrayDeque. */
+    /* check if null is return when removing from an empty LinkedListDeque. */
     public void emptyNullReturnTest() {
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
-        ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
+        TwoSentinelsLinkedListDeque<Integer> lld1 = new TwoSentinelsLinkedListDeque<Integer>();
 
         boolean passed1 = false;
         boolean passed2 = false;
@@ -174,7 +188,7 @@ public class ArrayDequeTest {
     /* Add large number of elements to deque; check if order is correct. */
     public void bigLLDequeTest() {
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-        ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
+        TwoSentinelsLinkedListDeque<Integer> lld1 = new TwoSentinelsLinkedListDeque<Integer>();
         for (int i = 0; i < 1000000; i++) {
             lld1.addLast(i);
         }
@@ -190,36 +204,38 @@ public class ArrayDequeTest {
 
     @Test
     public void equalTest() {
-        Deque<Integer> a1 = new ArrayDeque<>();
-        Deque<Integer> a2 = new ArrayDeque<>();
+        Deque<Integer> l1 = new LinkedListDeque<>();
+        Deque<Integer> l2 = new LinkedListDeque<>();
 
-        assertTrue(a1.equals(a2));
+        assertTrue(l1.equals(l2));
 
         for (int i = 0; i < 10; i++) {
-            a1.addLast(i);
-            a2.addLast(i);
+            l1.addLast(i);
+            l2.addLast(i);
         }
-        assertTrue(a1.equals(a2));
+        assertTrue(l1.equals(l2));
 
-        a1.removeLast();
-        assertFalse(a1.equals(a2));
+        l1.removeLast();
+        assertFalse(l1.equals(l2));
 
     }
 
     @Test
     public void forEachLoopTest() {
-        ArrayDeque<Integer> a1 = new ArrayDeque<>();
-        ArrayDeque<Integer> a2 = new ArrayDeque<>();
+        LinkedListDeque<Integer> l1 = new LinkedListDeque<>();
+        LinkedListDeque<Integer> l2 = new LinkedListDeque<>();
 
         for (int i = 0; i < 1000; i++) {
-            a1.addLast(i);
+            l1.addLast(i);
         }
 
-        for (Integer n: a1) {
+        for (Integer n: l1) {
             System.out.println(n);
         }
-        for (Integer n: a2) {
+        for (Integer n: l2) {
             System.out.println(n);
         }
     }
 }
+
+

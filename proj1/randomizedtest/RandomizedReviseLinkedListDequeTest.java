@@ -1,21 +1,16 @@
 package randomizedtest;
 
-import deque.LinkedListDeque;
+import deque.ReviseLinkedListDeque;
 import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
-/**
- * Created by hug.
- */
-public class RandomizedLinkedListDequeTest {
-    // YOUR TESTS HERE
+public class RandomizedReviseLinkedListDequeTest {
     @Test
     public void randomizedTest() {
-        LinkedListDeque<Integer> L = new LinkedListDeque<>();
+        ReviseLinkedListDeque<Integer> L = new ReviseLinkedListDeque<>();
 
-        int N = 100000;
+        int N = 500000;
         for (int i = 0; i < N; i += 1) {
             int operationNumber = StdRandom.uniform(0, 6);
             if (operationNumber == 0) {

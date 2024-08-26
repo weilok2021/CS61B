@@ -10,16 +10,16 @@ import static org.junit.Assert.assertEquals;
  *      SentinelF.next is equals to Sentinel B.
  *      SentinelB.prev is equals to Sentinel F.
  * */
-public class TwoSentinelsLinkedListDeque<Type> implements Deque<Type> {
+public class TwoSentinelsLinkedListDeque<T> implements Deque<T> {
     private Node sentinelF;
     private Node sentinelB;
     private int size;
 
     private class Node {
         private Node prev;
-        private Type item;
+        private T item;
         private Node next;
-        private Node(Node p, Type i, Node n) {
+        private Node(Node p, T i, Node n) {
             prev = p;
             item = i;
             next = n;
@@ -33,7 +33,7 @@ public class TwoSentinelsLinkedListDeque<Type> implements Deque<Type> {
         sentinelB.prev = sentinelF;
         size = 0;
     }
-    public TwoSentinelsLinkedListDeque(Type i) {
+    public TwoSentinelsLinkedListDeque(T i) {
         sentinelF = new Node(null, null, null);
         sentinelB = new Node(null, null, null);
         Node firstNode = new Node(sentinelF, i, sentinelB);
@@ -48,7 +48,7 @@ public class TwoSentinelsLinkedListDeque<Type> implements Deque<Type> {
     }
 
     @Override
-    public void addFirst(Type i) {
+    public void addFirst(T i) {
         Node firstNode = new Node(sentinelF, i, sentinelF.next);
         sentinelF.next.prev = firstNode; // sentinelF.next.prev will either be sentinelB or original firstNode
         sentinelF.next = firstNode; // insert new node into between sentinelF and original first node
@@ -56,7 +56,7 @@ public class TwoSentinelsLinkedListDeque<Type> implements Deque<Type> {
     }
 
     @Override
-    public void addLast(Type i) {
+    public void addLast(T i) {
         Node lastNode = new Node(sentinelB.prev, i, sentinelB);
         sentinelB.prev.next = lastNode;
         sentinelB.prev = lastNode;
@@ -78,35 +78,35 @@ public class TwoSentinelsLinkedListDeque<Type> implements Deque<Type> {
     }
 
     @Override
-    public Type removeFirst() {
+    public T removeFirst() {
         if (this.isEmpty()) {
             return null;
         }
-        Type first = sentinelF.next.item;
+        T first = sentinelF.next.item;
         sentinelF.next = sentinelF.next.next;
         size--;
         return first;
     }
 
     @Override
-    public Type removeLast() {
+    public T removeLast() {
         if (this.isEmpty()) {
             return null;
         }
-        Type last = sentinelB.prev.item;
+        T last = sentinelB.prev.item;
         sentinelB.prev = sentinelB.prev.prev;
         size--;
         return last;
     }
 
-    public Type getFirst() {
+    public T getFirst() {
         if (isEmpty()) {
             throw new IllegalStateException("List is empty");
         }
         return sentinelF.next.item;
     }
 
-    public Type getLast() {
+    public T getLast() {
         if (isEmpty()) {
             throw new IllegalStateException("List is empty");
         }
@@ -114,7 +114,7 @@ public class TwoSentinelsLinkedListDeque<Type> implements Deque<Type> {
     }
 
     @Override
-    public Type get(int i) {
+    public T get(int i) {
 //        Node p = sentinelF.next; //start from first item
 //        while (i != 0) {
 //            // System.out.println(p.item);

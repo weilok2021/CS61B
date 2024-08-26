@@ -9,16 +9,16 @@ import java.util.Iterator;
  * the size variable is always equals to the number of items in list.
  * */
 
-public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
     private Node sentinel;
     // private Node sentinelB;
     private int size;
 
     private class Node {
         private Node prev;
-        private Type item;
+        private T item;
         private Node next;
-        private Node(Node p, Type i, Node n) {
+        private Node(Node p, T i, Node n) {
             prev = p;
             item = i;
             next = n;
@@ -32,24 +32,20 @@ public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
         size = 0;
     }
 
-    public LinkedListDeque(Type i) {
+    public LinkedListDeque(T i) {
         sentinel = new Node(null, null, null);
         Node firstNode = new Node(sentinel, i, sentinel);
         sentinel.next = firstNode;
         sentinel.prev = firstNode;
-        // chatgpt solution, shorter and cleaner
-//        this();
-//        addFirst(i);
         size = 1;
     }
 
-    public Iterator<Type> iterator() {
+    public Iterator<T> iterator() {
         return new LinkedListDequeIterator();
     }
 
-    private class LinkedListDequeIterator implements Iterator<Type> {
+    private class LinkedListDequeIterator implements Iterator<T> {
         private int currentPos;
-        // private Node p = sentinel.next; // the first item in linkedlist
 
         public LinkedListDequeIterator() {
             currentPos = 0;
@@ -63,38 +59,14 @@ public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
          * every time we called L.get(i).
          * Cons: easier to get bug if I am traversing nodes through pointers.
          * */
-        public Type next() {
-            Type returnItem = get(currentPos); // very slow when size is large
-//             Type returnItem = p.item;
+        public T next() {
+            T returnItem = get(currentPos); // very slow when size is large
+//             T returnItem = p.item;
 //             p = p.next;
              currentPos++;
              return returnItem;
         }
     }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        // o is the identical object as this, return true immediately
-//        if (this == o) {
-//            return true;
-//        }
-//
-//        if (o instanceof LinkedListDeque otherObject) {
-//            // different size indicates different list
-//            if (this.size() != otherObject.size()) {
-//                return false;
-//            }
-//
-//            // verify the equality of corresponding elements in both list.
-//            for (int i = 0; i < this.size(); i++) {
-//                if (this.get(i) != otherObject.get(i)) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
 
         @Override
         public boolean equals(Object o) {
@@ -117,24 +89,44 @@ public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
             return true;
         }
 
-
-
-
-
     @Override
-    public void addFirst(Type i) {
-        Node firstNode = new Node(sentinel, i, sentinel.next);
-        sentinel.next.prev = firstNode; // sentinelF.next.prev will either be sentinel or original firstNode
-        sentinel.next = firstNode; // insert new node into between sentinel and original first node
-        size++;
+    public void addFirst(T i) {
+        /**
+         * let newFirst.prev points at sentinel, newFirst.next points to oldFirst(if exist)
+         * let oldFirst.prev now points at new firstItem, which mean it comes after newFirst.
+         * Lastly, set sentinel.next points at the newFirst
+         */
+
+        Node oldFirst = sentinel.next;
+        Node newFirst = new Node(sentinel, i, oldFirst);
+        oldFirst.prev = newFirst;
+        sentinel.next = newFirst;
+        size += 1;
+
+//        Node firstNode = new Node(sentinel, i, sentinel.next);
+//        sentinel.next.prev = firstNode; // sentinelF.next.prev will either be sentinel or original firstNode
+//        sentinel.next = firstNode; // insert new node into between sentinel and original first node
+//        size++;
     }
 
     @Override
-    public void addLast(Type i) {
-        Node lastNode = new Node(sentinel.prev, i, sentinel);
-        sentinel.prev.next = lastNode; // sentinel.prev.next is either sentinel or original last node
-        sentinel.prev = lastNode;
-        size++;
+    public void addLast(T i) {
+        /**
+         * newLast.prev points at oldLast (if no last node exist, it will point to sentinel),
+         * newLast.next points to sentinel.
+         * oldLast.next now points at newLast, which mean it comes before newLast.
+         * Lastly, sentinel.prev points at the newLast.
+         */
+        Node oldLast = sentinel.prev;
+        Node newLast = new Node(oldLast, i, sentinel);
+        oldLast.next = newLast;
+        sentinel.prev = newLast;
+        size += 1;
+
+//        Node lastNode = new Node(sentinel.prev, i, sentinel);
+//        sentinel.prev.next = lastNode; // sentinel.prev.next is either sentinel or original last node
+//        sentinel.prev = lastNode;
+//        size++;
     }
 
     @Override
@@ -157,11 +149,11 @@ public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
     }
 
     @Override
-    public Type removeFirst() {
+    public T removeFirst() {
         if (this.isEmpty()) {
             return null;
         }
-        Type first = sentinel.next.item;
+        T first = sentinel.next.item;
         sentinel.next = sentinel.next.next; // sentinel points to new firstnode
         sentinel.next.prev = sentinel; // new firstnode point to sentinel
         size--;
@@ -169,25 +161,25 @@ public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
     }
 
     @Override
-    public Type removeLast() {
+    public T removeLast() {
         if (this.isEmpty()) {
             return null;
         }
-        Type last = sentinel.prev.item;
+        T last = sentinel.prev.item;
         sentinel.prev = sentinel.prev.prev; // sentinel point to new lastnode
         sentinel.prev.next = sentinel; // new lastnode point to sentinel
         size--;
         return last;
     }
 
-    public Type getFirst() {
+    public T getFirst() {
         if (isEmpty()) {
             throw new IllegalStateException("List is empty");
         }
         return sentinel.next.item;
     }
 
-    public Type getLast() {
+    public T getLast() {
         if (isEmpty()) {
             throw new IllegalStateException("List is empty");
         }
@@ -195,7 +187,7 @@ public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
     }
 
     @Override
-    public Type get(int i) {
+    public T get(int i) {
         if (i < 0 || i >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
@@ -208,17 +200,19 @@ public class LinkedListDeque<Type> implements Deque<Type>, Iterable<Type>{
     }
 
     // getRecursive helper method
-    private Type getRecursive(int i, Node p) {
+    private T getRecursive(int i, Node p) {
         if (i < 0 || i >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
-        if (i == 0 && p != null) {
+        // the condition p.item != null is to prevent accessing null sentinel.item
+        // this is possible when the list is empty.
+        if (i == 0 && p.item != null) {
             return p.item;
         }
         return getRecursive(i - 1, p.next);
     }
 
-    public Type getRecursive(int i) {
+    public T getRecursive(int i) {
         return getRecursive(i, sentinel.next);
     }
 }
