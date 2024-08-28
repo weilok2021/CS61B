@@ -28,7 +28,7 @@ public class TimeSLList {
         AList timeList = new AList();
         AList functionCall = new AList();
 
-        while (size < 128000) {
+        while (size < 64000) {
             SLList testCall = new SLList();
             int numCalls = 10000;
             // add items to the list.
